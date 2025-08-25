@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoalService } from "../services/GoalService";
+import { MasterService } from "../services/MasterService";
 
 
 export const AddGoal = () => {
   
   const [goal, setGoal] = useState({});
+  const [goalCategories, setGoalCategories] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() =>{
+    setGoalCategories(MasterService.getGoalCategories());
+  }, [])
   
   function handleAddTask() {
     const newTask = {id: Date.now(), text: "", completed: false};
@@ -15,7 +22,11 @@ export const AddGoal = () => {
   }
 
   function handleSaveGoal(){
+    goal.status = "ready";
+    goal.progress = 0;
+    goal.id = Date.now();
     GoalService.addGoal(goal);
+    navigate("/");
   }
 
   return (
@@ -63,10 +74,12 @@ export const AddGoal = () => {
             onChange={(e) => setGoal({ ...goal, category: e.target.value })}
           >
             <option value="" disabled>Select category</option>
-            <option value="Finance">Finance</option>
-            <option value="Career">Career</option>
-            <option value="Health">Health</option>
-            <option value="Personal">Personal</option>
+            {
+              goalCategories.map((cat) => {
+                return <option key={cat} value={cat}>{cat}</option>
+              })
+            }
+            
           </select>
         </div>
 

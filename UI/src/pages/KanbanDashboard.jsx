@@ -1,14 +1,23 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { GoalCard } from "./GoalCard";
 import { GoalService } from "../services/GoalService";
 import { PlusIcon } from "lucide-react"; //
 import { Link } from "react-router-dom";
 
 export default function KanbanDashboard() {
+
+  const [ready, setReady] = useState([]);
+  const [inProgress, setInProgress] = useState([]);
+  const [completed, setCompleted] = useState([]);
+
+
+  useEffect(() => {
+    setReady(GoalService.getGoals("ready"));
+    setInProgress(GoalService.getGoals("inprogress"));
+    setCompleted(GoalService.getGoals("completed"));
+
+  }, [])
   
-    const ready = GoalService.getGoals("ready");
-    const inProgress = GoalService.getGoals("inprogress");
-    const completed = GoalService.getGoals("completed");
 
   const Column = ({ title, goals, color }) => (
     <div className="flex-1 bg-gray-50 rounded-2xl p-4 shadow-inner border">
