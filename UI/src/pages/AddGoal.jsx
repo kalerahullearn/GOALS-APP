@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link, useNavigate } from "react-router-dom";
 import { GoalService } from "../services/GoalService";
 import { MasterService } from "../services/MasterService";
+import { TaskCard } from "./TaskCard";
 
 
 export const AddGoal = () => {
@@ -27,6 +28,12 @@ export const AddGoal = () => {
     goal.id = Date.now();
     GoalService.addGoal(goal);
     navigate("/");
+  }
+
+  function removeGoalTask(taskId){
+    const tasksAfterRemoval = goal.tasks.filter(task => task.id != taskId);
+    goal.tasks = tasksAfterRemoval;
+    setGoal({...goal});
   }
 
   return (
@@ -61,13 +68,13 @@ export const AddGoal = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-1 mb-6">
+        <div className="mb-4">
           <label className="block text-sm font-medium text-left text-gray-700">
             Category
           </label>
           <select
             id="category"
-            className="w-60 mt-1 px-1 py-2 border border-gray-300 rounded-lg 
+            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg 
                       text-gray-900 placeholder-gray-400
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             value={goal.category || ""}
@@ -112,30 +119,14 @@ export const AddGoal = () => {
         
         <div className="mb-4">
           <label className="block text-sm font-medium text-left text-gray-700">Tasks</label>
-            
-            {goal.tasks?.map(task => (
-                <div key={task.id} className="flex items-center gap-2 mt-2">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 text-blue-600"
-                    value={task.completed}
-                    onChange={e => {
-                      task.completed = !task.completed;
-                      setGoal({...goal});
-                    }}/>
-                  
-                  <input
-                    type="text"
-                    value={task.text}
-                    onChange={e => {
-                      task.text = e.target.value;
-                      setGoal({...goal});
-                    }}
-                    className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg 
-                          text-gray-900 placeholder-gray-400
-                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"/>
-                </div>
+             {goal.tasks?.map(task => (
+                <TaskCard key={task.id} task={task} removeGoalTask={removeGoalTask}/>
             ))}
+        </div>
+
+        <div className="mb-4">
+          
+           
           <div className="flex justify-end mt-4">
             <button
               className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium

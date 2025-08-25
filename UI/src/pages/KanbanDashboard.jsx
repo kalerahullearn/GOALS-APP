@@ -34,10 +34,12 @@ export default function KanbanDashboard() {
     <>
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold text-gray-800">📌 Goals Board</h2>
-        <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-xl shadow hover:bg-blue-700 transition">
-          <PlusIcon className="w-4 h-4" />
-          <Link to={"/add/goal"} className="text-white">Add Goal</Link>
-        </button>
+        <Link to={"/add/goal"} className="text-white">
+          <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-xl shadow hover:bg-blue-700 transition">
+            <PlusIcon className="w-4 h-4" />
+            Add Goal
+          </button>
+        </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Column title="🟢 Ready" goals={ready} color="text-green-600" />
