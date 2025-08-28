@@ -17,6 +17,10 @@ export const GoalService = {
         const allGoals = GoalsStorage.getAllGoals();
         allGoals.push(goal);
         GoalsStorage.setGoals(allGoals);
+    },
+
+    getGoal: (id) => {
+        return GoalsStorage.getGoal(id);
     }
 };
 
@@ -24,17 +28,16 @@ const GoalsStorage = {
     getAllGoals: () => {
         return JSON.parse(localStorage.getItem("goals")) || [];
     },
-    
     setGoals: (goals) => {
         localStorage.setItem("goals", JSON.stringify(goals));
     },
     removeGoal: (id) => {
-        const allGoals = getAllGoals();
+        const allGoals = GoalsStorage.getAllGoals();
         const filteredOut = allGoals.filter(goal => goal.id != id);
         setGoals(filteredOut);
     },
     getGoal: (id) => {
-        const allGoals = getAllGoals();
+        const allGoals = GoalsStorage.getAllGoals();
         return allGoals.find(goal => goal.id == id);
     }
 }

@@ -6,7 +6,15 @@ export const TaskCard = ({task, addTask, removeGoalTask}) => {
     return (
         <div className="w-full max-w-md bg-white border border-gray-200 rounded-md shadow-sm p-2 mb-2 flex items-start justify-between text-sm hover:shadow transition">
             <div className="flex flex-1 items-start">
-                <input type="checkbox" className="mt-1 mr-2 w-4 h-4 accent-blue-500" />
+                <input type="checkbox" 
+                    className="mt-1 mr-2 w-4 h-4 accent-blue-500"
+                    checked={task?.completed ? true : false} 
+                    value={task?.completed ? true:false} 
+                    onChange={e => {
+                        task.completed = e.target.value;
+                        addTask(task)}
+                    }
+                />
                 <div className="flex flex-col flex-1">
                     <input 
                         type="text" 

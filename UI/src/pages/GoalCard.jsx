@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { EllipsisVerticalIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const GoalCard = ({ goal }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,29 +18,31 @@ export const GoalCard = ({ goal }) => {
   }, []);
 
   return (
+    
     <div
       key={goal.id}
-      className="relative p-6 bg-white rounded-2xl shadow-lg border hover:shadow-xl transition"
-    >
+      className="relative p-6 bg-white rounded-2xl shadow-lg border hover:shadow-xl transition">
       <div className="absolute top-2 right-2">
-  <EllipsisVerticalIcon
-    onClick={() => setMenuOpen(!menuOpen)}
-    className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
-  />
+        <EllipsisVerticalIcon
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
+        />
 
-  {menuOpen && (
-    <div className="absolute right-0 w-15 bg-white border rounded-md shadow-md z-50">
-      <button className="w-full text-left px-3 py-1 text-gray-700 hover:bg-gray-100">
-        ✏️
-      </button>
-      <button className="w-full text-left px-3 py-1 text-red-600 hover:bg-red-50">
-        🗑️
-      </button>
-    </div>
-  )}
-</div>
+        {menuOpen && (
+          <div className="absolute right-0 w-15 bg-white border rounded-md shadow-md z-50">
+            <button className="w-full text-left px-3 py-1 text-gray-700 hover:bg-gray-100">
+              ✏️
+            </button>
+            <button className="w-full text-left px-3 py-1 text-red-600 hover:bg-red-50">
+              🗑️
+            </button>
+          </div>
+        )}
+      </div>
 
       {/* Card Content */}
+      
+      <Link to={`/goal/${goal.id}`} className="text-white">
       <h3 className="text-lg font-bold text-gray-900">{goal.title}</h3>
       <p className="text-sm text-gray-600 mt-1">{goal.detail}</p>
 
@@ -51,6 +54,8 @@ export const GoalCard = ({ goal }) => {
         />
       </div>
       <p className="text-xs text-gray-500 mt-2">{goal.progress}% Complete</p>
+      </Link>
     </div>
+    
   );
 };
