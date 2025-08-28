@@ -8,7 +8,6 @@ const goals = [
         ];
 
 export const GoalService = {
-    
     getGoals: (status) => {
         return GoalsStorage.getAllGoals().filter(goal => goal.status === status);
     },

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoalService } from "../services/GoalService";
 import { MasterService } from "../services/MasterService";
 import { TaskCard } from "./TaskCard";
+import { IDGenerator } from "../utils/IDGenerator";
 
 
 export const AddGoal = () => {
@@ -17,15 +18,25 @@ export const AddGoal = () => {
     setGoalCategories(MasterService.getGoalCategories());
   }, [])
   
-  function handleAddTask() {
-    const newTask = {id: Date.now(), text: "", completed: false};
+  function addTask(task){
+    goal.tasks.map(t => {
+        if(t.id === task.id){
+            return task;
+        }
+        return t;
+    });
+    setGoal({...goal});
+  }
+
+  function handleNewBlankTask() {
+    const newTask = {id: IDGenerator.generateID(), title: "", note: "", completed: false};
     setGoal({...goal, tasks: [...(goal.tasks || []), newTask]});
   }
 
   function handleSaveGoal(){
     goal.status = "ready";
     goal.progress = 0;
-    goal.id = Date.now();
+    goal.id = IDGenerator.generateID();
     GoalService.addGoal(goal);
     navigate("/");
   }
@@ -120,7 +131,8 @@ export const AddGoal = () => {
         <div className="mb-4">
           <label className="block text-sm font-medium text-left text-gray-700">Tasks</label>
              {goal.tasks?.map(task => (
-                <TaskCard key={task.id} task={task} removeGoalTask={removeGoalTask}/>
+              
+                <TaskCard key={task.id} task={task} addTask={addTask} removeGoalTask={removeGoalTask}/>
             ))}
         </div>
 
@@ -133,7 +145,7 @@ export const AddGoal = () => {
                         text-gray-600 border border-gray-300 rounded-lg
                         hover:bg-gray-100 hover:text-gray-800
                         focus:outline-none focus:ring-2 focus:ring-gray-300 transition"
-                        onClick={handleAddTask} >
+                        onClick={handleNewBlankTask} >
               ➕ Add Task
             </button>
           </div>
