@@ -6,18 +6,25 @@ import { GoalService } from "../services/GoalService";
 import { MasterService } from "../services/MasterService";
 import { TaskCard } from "./TaskCard";
 import { IDGenerator } from "../utils/IDGenerator";
+import { CommonUtils } from "../utils/CommonUtils";
 
 
 export const AddGoal = () => {
   
   const [goal, setGoal] = useState({});
   const [goalCategories, setGoalCategories] = useState([]);
+  const [totalDays, setTotalDays] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() =>{
     setGoalCategories(MasterService.getGoalCategories());
-  }, [])
+    calculateTotalDays();
+  }, [goal.startDate, goal.endDate])
   
+  function calculateTotalDays(){
+    setTotalDays(CommonUtils.calculateDaysBetweenDates(goal.startDate, goal.endDate));
+  }
+
   function addTask(task){
     goal.tasks.map(t => {
         if(t.id === task.id){
@@ -124,15 +131,14 @@ export const AddGoal = () => {
               onSelect={date => setGoal({...goal, endDate:date})}/>
           </div>
           <div>
-            <label className="block text-sm font-medium text-left text-gray-700 mt-7">120 Days</label>
+            <label className="block text-sm font-medium text-left text-gray-700 mt-7">{totalDays}</label>
           </div>
         </div>
         
         <div className="mb-4">
           <label className="block text-sm font-medium text-left text-gray-700">Tasks</label>
              {goal.tasks?.map(task => (
-              
-                <TaskCard key={task.id} task={task} addTask={addTask} removeGoalTask={removeGoalTask}/>
+                <TaskCard key={task.id} readOnly={false} task={task} addTask={addTask} removeGoalTask={removeGoalTask}/>
             ))}
         </div>
 

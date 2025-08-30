@@ -10,21 +10,34 @@ export default function KanbanDashboard() {
   const [inProgress, setInProgress] = useState([]);
   const [completed, setCompleted] = useState([]);
 
-
   useEffect(() => {
     setReady(GoalService.getGoals("ready"));
     setInProgress(GoalService.getGoals("inprogress"));
     setCompleted(GoalService.getGoals("completed"));
+  }, [ready.length, inProgress.length, completed.length]);
 
-  }, [])
-  
+  function deleteGoal(goal){
+    switch(goal.status){
+      case "ready":
+        setReady(ready.filter(g => g.id !== goal.id));
+        break;
+      case "inprogress":
+        setReady(inprogress.filter(g => g.id !== goal.id));
+        break;
+      case "completed":
+        setReady(completed.filter(g => g.id !== goal.id));
+        break;
+    }
+    
+    GoalService.deleteGoal(goal.id);
+  }
 
   const Column = ({ title, goals, color }) => (
     <div className="flex-1 bg-gray-50 rounded-2xl p-4 shadow-inner border">
       <h2 className={`text-lg font-bold mb-4 ${color}`}>{title}</h2>
       <div className="space-y-4">
         {goals.map((goal) => (
-            <GoalCard key={goal.id} goal={goal} />
+            <GoalCard key={goal.id} goal={goal} deleteGoal={deleteGoal}/>
         ))}
       </div>
     </div>

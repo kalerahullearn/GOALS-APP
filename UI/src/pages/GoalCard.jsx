@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { EllipsisVerticalIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export const GoalCard = ({ goal }) => {
+export const GoalCard = ({ goal, deleteGoal }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -33,7 +33,7 @@ export const GoalCard = ({ goal }) => {
             <button className="w-full text-left px-3 py-1 text-gray-700 hover:bg-gray-100">
               ✏️
             </button>
-            <button className="w-full text-left px-3 py-1 text-red-600 hover:bg-red-50">
+            <button className="w-full text-left px-3 py-1 text-red-600 hover:bg-red-50" onClick={e => deleteGoal(goal)}>
               🗑️
             </button>
           </div>
