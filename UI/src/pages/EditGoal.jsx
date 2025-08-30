@@ -20,6 +20,9 @@ export const EditGoal = () => {
   useEffect(() =>{
     setGoalCategories(MasterService.getGoalCategories());
     setGoal(GoalService.getGoal(goalId));
+  }, [])
+
+  useEffect(() =>{
     calculateTotalDays();
   }, [goal.startDate, goal.endDate])
 
@@ -121,8 +124,8 @@ export const EditGoal = () => {
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholderText="Select start date" 
               id="startDate"
-              selected={goal.startDate}
-              onSelect={date => setGoal({...goal, startDate:date})}/>
+              selected={goal.startDate ? new Date(goal.startDate) : null}
+              onChange={date => setGoal({...goal, startDate:date})}/>
           </div>
           <div>
             <label className="block text-sm font-medium text-left text-gray-700">End Date</label>
@@ -131,8 +134,8 @@ export const EditGoal = () => {
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholderText="Select end date" 
               id="endDate"
-              selected={goal.endDate}
-              onSelect={date => setGoal({...goal, endDate:date})}/>
+              selected={goal.endDate ? new Date(goal.endDate) : null}
+              onChange={date => setGoal({...goal, endDate:date})}/>
           </div>
           <div>
             <label className="block text-sm font-medium text-left text-gray-700 mt-7">{totalDays} Days</label>
