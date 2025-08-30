@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { EllipsisVerticalIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 
 export const GoalCard = ({ goal, deleteGoal }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   // Close on outside click
   useEffect(() => {
@@ -16,6 +17,11 @@ export const GoalCard = ({ goal, deleteGoal }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+
+  function navigateToEditGoal(goalId){
+    navigate("/goals/edit/"+goalId);
+  }
 
   return (
     
@@ -30,7 +36,7 @@ export const GoalCard = ({ goal, deleteGoal }) => {
 
         {menuOpen && (
           <div className="absolute right-0 w-15 bg-white border rounded-md shadow-md z-50">
-            <button className="w-full text-left px-3 py-1 text-gray-700 hover:bg-gray-100">
+            <button className="w-full text-left px-3 py-1 text-gray-700 hover:bg-gray-100" onClick={e => navigateToEditGoal(goal.id)}>
               ✏️
             </button>
             <button className="w-full text-left px-3 py-1 text-red-600 hover:bg-red-50" onClick={e => deleteGoal(goal)}>
@@ -42,7 +48,7 @@ export const GoalCard = ({ goal, deleteGoal }) => {
 
       {/* Card Content */}
       
-      <Link to={`/goal/${goal.id}`} className="text-white">
+      <Link to={`/goals/view/${goal.id}`} className="text-white">
       <h3 className="text-lg font-bold text-gray-900">{goal.title}</h3>
       <p className="text-sm text-gray-600 mt-1">{goal.detail}</p>
 

@@ -1,23 +1,32 @@
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { GoalService } from "../services/GoalService";
 import { MasterService } from "../services/MasterService";
 import { TaskCard } from "./TaskCard";
 import { IDGenerator } from "../utils/IDGenerator";
+import { CommonUtils } from "../utils/CommonUtils";
 
 
 export const EditGoal = () => {
   
   const [goal, setGoal] = useState({});
   const [goalCategories, setGoalCategories] = useState([]);
+  const [totalDays, setTotalDays] = useState(0);
   const navigate = useNavigate();
+  const {goalId}  = useParams();
 
   useEffect(() =>{
     setGoalCategories(MasterService.getGoalCategories());
-  }, [])
-  
+    setGoal(GoalService.getGoal(goalId));
+    calculateTotalDays();
+  }, [goal.startDate, goal.endDate])
+
+  function calculateTotalDays(){
+    setTotalDays(CommonUtils.calculateDaysBetweenDates(goal.startDate, goal.endDate));
+  }
+
   function addTask(task){
     goal.tasks.map(t => {
         if(t.id === task.id){
@@ -34,11 +43,12 @@ export const EditGoal = () => {
   }
 
   function handleSaveGoal(){
-    goal.status = "ready";
-    goal.progress = 0;
-    goal.id = IDGenerator.generateID();
-    GoalService.addGoal(goal);
+    updateGoal(goal);
     navigate("/");
+  }
+
+  function updateGoal(goal){
+    GoalService.updateGoal(goal);
   }
 
   function removeGoalTask(taskId){
@@ -50,7 +60,7 @@ export const EditGoal = () => {
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200 p-6">
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">➕ Add New Goal</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit New Goal</h2>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-left text-gray-700">Goal Title</label>
@@ -61,6 +71,7 @@ export const EditGoal = () => {
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter goal title"
             id="title"
+            defaultValue={goal.title}
             onChange={e => setGoal({...goal, title:e.target.value})}
           />
         </div>
@@ -75,8 +86,8 @@ export const EditGoal = () => {
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter goal description"
             id="description"
-            onChange={e => setGoal({...goal, description: e.target.value})}
-          />
+            defaultValue={goal.description}
+            onChange={e => setGoal({...goal, description: e.target.value})}/>
         </div>
 
         <div className="mb-4">
@@ -94,7 +105,7 @@ export const EditGoal = () => {
             <option value="" disabled>Select category</option>
             {
               goalCategories.map((cat) => {
-                return <option key={cat} value={cat}>{cat}</option>
+                return <option key={cat} value={cat} >{cat}</option>
               })
             }
             
@@ -124,21 +135,18 @@ export const EditGoal = () => {
               onSelect={date => setGoal({...goal, endDate:date})}/>
           </div>
           <div>
-            <label className="block text-sm font-medium text-left text-gray-700 mt-7">120 Days</label>
+            <label className="block text-sm font-medium text-left text-gray-700 mt-7">{totalDays} Days</label>
           </div>
         </div>
         
         <div className="mb-4">
           <label className="block text-sm font-medium text-left text-gray-700">Tasks</label>
-             {goal.tasks?.map(task => (
-              
-                <TaskCard key={task.id} task={task} addTask={addTask} removeGoalTask={removeGoalTask}/>
+              {goal.tasks?.map(task => (
+                <TaskCard key={task.id} readOnly={false} task={task} addTask={addTask} removeGoalTask={removeGoalTask}/>
             ))}
         </div>
 
         <div className="mb-4">
-          
-           
           <div className="flex justify-end mt-4">
             <button
               className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium
@@ -152,10 +160,12 @@ export const EditGoal = () => {
         </div>
 
         <div className="flex justify-end gap-3">
-          <button
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
-            <Link to={"/"}>Cancel</Link>
-          </button>
+          <Link to={"/"} className="text-white">
+            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+              Cancel
+            </button>
+          </Link>
+          
           <button
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" onClick={handleSaveGoal}>
             Save

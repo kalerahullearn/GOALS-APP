@@ -131,7 +131,7 @@ export const AddGoal = () => {
               onSelect={date => setGoal({...goal, endDate:date})}/>
           </div>
           <div>
-            <label className="block text-sm font-medium text-left text-gray-700 mt-7">{totalDays}</label>
+            <label className="block text-sm font-medium text-left text-gray-700 mt-7">{totalDays} Days</label>
           </div>
         </div>
         

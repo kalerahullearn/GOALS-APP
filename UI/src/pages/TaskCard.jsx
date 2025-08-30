@@ -64,7 +64,6 @@ export const TaskCard = ({task, addTask, removeGoalTask}) => {
                 </div>
             </div>
             <div className="flex flex-col gap-1 ml-2">
-                <button className="p-1 bg-blue-50 hover:bg-blue-100 rounded text-xs">✏️</button>
                 <button className="p-1 bg-red-50 hover:bg-red-100 rounded text-xs" 
                 onClick={e => removeGoalTask(task.id)}
                 >❌</button>
