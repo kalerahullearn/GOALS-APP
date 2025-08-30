@@ -117,7 +117,7 @@ export const AddGoal = () => {
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholderText="Select start date" 
               id="startDate"
-              selected={goal.startDate}
+              selected={CommonUtils.formatDate(goal?.startDate)}
               onSelect={date => setGoal({...goal, startDate:date})}/>
           </div>
           <div>
@@ -127,7 +127,7 @@ export const AddGoal = () => {
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholderText="Select end date" 
               id="endDate"
-              selected={goal.endDate}
+              selected={CommonUtils.formatDate(goal?.endDate)}
               onSelect={date => setGoal({...goal, endDate:date})}/>
           </div>
           <div>

@@ -1,7 +1,8 @@
 export const CommonUtils = {
     formatDate: (dateString) => {
+        if(!dateString || dateString == "") return null;
         const date  = new Date(dateString);
-        return date.toLocaleDateString();
+        return date.toLocaleDateString("en-US");
     },
     
     calculateDaysBetweenDates: (startDateString, endDateString) => {

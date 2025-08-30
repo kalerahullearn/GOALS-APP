@@ -18,8 +18,11 @@ export const ViewGoal = () => {
   useEffect(() => {
     setGoalCategories(MasterService.getGoalCategories());
     setGoal(GoalService.getGoal(goalId));
-    setTotalDays(CommonUtils.calculateDaysBetweenDates(goal.startDate, goal.endDate));
   }, [goalId])
+
+  useEffect(() =>{
+    setTotalDays(CommonUtils.calculateDaysBetweenDates(goal.startDate, goal.endDate));
+  }, [goal.startDate, goal.endDate])
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200 p-6">

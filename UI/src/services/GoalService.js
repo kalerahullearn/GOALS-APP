@@ -1,3 +1,4 @@
+import { CommonUtils } from "../utils/CommonUtils";
 
 export const GoalService = {
     getGoals: (status) => {
@@ -6,9 +7,7 @@ export const GoalService = {
 
     addGoal: (goal) => {
         console.log("Goal added:", goal);
-        const allGoals = GoalsStorage.getAllGoals();
-        allGoals.push(goal);
-        GoalsStorage.setGoals(allGoals);
+        GoalsStorage.addGoal(goal);
     },
 
     getGoal: (id) => {
@@ -31,7 +30,20 @@ const GoalsStorage = {
     setGoals: (goals) => {
         localStorage.setItem("goals", JSON.stringify(goals));
     },
-
+    addGoal: (goal) => {
+        goal = {...goal, progress: GoalsStorage.calculateProgress(goal)};
+        const allGoals = GoalsStorage.getAllGoals();
+        allGoals.push(goal);
+        GoalsStorage.setGoals(allGoals);
+    },
+    updateGoal: (goal) => {
+        goal = {...goal, progress: GoalsStorage.calculateProgress(goal)};
+        const allGoals = GoalsStorage.getAllGoals();
+        const goalsUpdated = allGoals.map(gl => {
+            return gl.id == goal.id ? {...gl, ...goal}: gl;
+        });
+        GoalsStorage.setGoals(goalsUpdated);
+    },
     removeGoal: (id) => {
         const allGoals = GoalsStorage.getAllGoals();
         const filteredOut = allGoals.filter(goal => goal.id != id);
@@ -41,11 +53,13 @@ const GoalsStorage = {
         const allGoals = GoalsStorage.getAllGoals();
         return allGoals.find(goal => goal.id == id);
     },
-    updateGoal: (goal) => {
-        const allGoals = GoalsStorage.getAllGoals();
-        const goalsUpdated = allGoals.map(gl => {
-            return gl.id == goal.id ? {...gl, ...goal}: gl;
-        });
-        GoalsStorage.setGoals(goalsUpdated);
+    calculateProgress: (goal) => {
+        const tasksCompleted = goal.tasks.filter(task => task.completed);
+        const totalTargetDays = CommonUtils.calculateDaysBetweenDates(goal.startDate, goal.endDate);
+        let totalCompletedDays = 0;
+        for(var i=0;i<tasksCompleted.length;i++){
+            totalCompletedDays += CommonUtils.calculateDaysBetweenDates(tasksCompleted[i].startDate, tasksCompleted[i].endDate);
+        }
+        return Math.ceil((totalCompletedDays/totalTargetDays) * 100);
     }
 }

@@ -124,7 +124,7 @@ export const EditGoal = () => {
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholderText="Select start date" 
               id="startDate"
-              selected={goal.startDate ? new Date(goal.startDate) : null}
+              selected={CommonUtils.formatDate(goal?.startDate)}
               onChange={date => setGoal({...goal, startDate:date})}/>
           </div>
           <div>
@@ -134,7 +134,7 @@ export const EditGoal = () => {
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholderText="Select end date" 
               id="endDate"
-              selected={goal.endDate ? new Date(goal.endDate) : null}
+              selected={CommonUtils.formatDate(goal?.endDate)}
               onChange={date => setGoal({...goal, endDate:date})}/>
           </div>
           <div>
