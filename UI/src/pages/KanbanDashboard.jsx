@@ -22,7 +22,7 @@ export default function KanbanDashboard() {
         setReady(ready.filter(g => g.id !== goal.id));
         break;
       case "inprogress":
-        setReady(inprogress.filter(g => g.id !== goal.id));
+        setReady(inProgress.filter(g => g.id !== goal.id));
         break;
       case "completed":
         setReady(completed.filter(g => g.id !== goal.id));

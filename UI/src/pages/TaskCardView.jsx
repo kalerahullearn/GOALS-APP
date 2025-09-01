@@ -21,7 +21,7 @@ export const TaskCardView = ({task}) => {
                         readOnly/>
                     <textarea 
                         placeholder="Note..." 
-                        rows="3"
+                        rows="1"
                         onInput={(e) => {
                             e.target.style.height = "auto";
                             e.target.style.height = `${e.target.scrollHeight}px`;
@@ -32,7 +32,7 @@ export const TaskCardView = ({task}) => {
 
                     <div className="flex gap-1 mt-1">
                         <DatePicker
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 
+                            className="w-full px-4 border border-gray-300 rounded-lg text-gray-900 
                                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholderText="Start date" 
                             id="startDate"
@@ -40,7 +40,7 @@ export const TaskCardView = ({task}) => {
                             readOnly/>
 
                         <DatePicker
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 
+                            className="w-full px-4 border border-gray-300 rounded-lg text-gray-900 
                                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholderText="End date" 
                             id="endDate"

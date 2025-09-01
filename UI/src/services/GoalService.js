@@ -31,13 +31,13 @@ const GoalsStorage = {
         localStorage.setItem("goals", JSON.stringify(goals));
     },
     addGoal: (goal) => {
-        goal = {...goal, progress: GoalsStorage.calculateProgress(goal)};
+        goal = GoalsStorage.handleProgress(goal);
         const allGoals = GoalsStorage.getAllGoals();
         allGoals.push(goal);
         GoalsStorage.setGoals(allGoals);
     },
     updateGoal: (goal) => {
-        goal = {...goal, progress: GoalsStorage.calculateProgress(goal)};
+        goal = GoalsStorage.handleProgress(goal);
         const allGoals = GoalsStorage.getAllGoals();
         const goalsUpdated = allGoals.map(gl => {
             return gl.id == goal.id ? {...gl, ...goal}: gl;
@@ -61,5 +61,11 @@ const GoalsStorage = {
             totalCompletedDays += CommonUtils.calculateDaysBetweenDates(tasksCompleted[i].startDate, tasksCompleted[i].endDate);
         }
         return Math.ceil((totalCompletedDays/totalTargetDays) * 100);
+    },
+    handleProgress :(goal) => {
+        let progress = GoalsStorage.calculateProgress(goal);
+        const status = progress > 0 ? "inprogress": "ready";
+        goal = {...goal, progress: progress, status: status};
+        return goal;
     }
 }

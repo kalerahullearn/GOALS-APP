@@ -8,10 +8,10 @@ export const TaskCard = ({task, addTask, removeGoalTask}) => {
             <div className="flex flex-1 items-start">
                 <input type="checkbox" 
                     className="mt-1 mr-2 w-4 h-4 accent-blue-500"
-                    checked={task?.completed ? true : false} 
+                    checked={task?.completed ?? true} 
                     value={task?.completed ? true:false} 
                     onChange={e => {
-                        task.completed = e.target.value;
+                        task.completed = e.target.checked;
                         addTask(task)
                     }
                     }
@@ -27,7 +27,7 @@ export const TaskCard = ({task, addTask, removeGoalTask}) => {
                             addTask(task)}}/>
                     <textarea 
                         placeholder="Note..." 
-                        rows="3"
+                        rows="1"
                         onInput={(e) => {
                             e.target.style.height = "auto";
                             e.target.style.height = `${e.target.scrollHeight}px`;
@@ -38,9 +38,9 @@ export const TaskCard = ({task, addTask, removeGoalTask}) => {
                             task.note = e.target.value;
                             addTask(task)}}/>
 
-                    <div className="flex gap-1 mt-1">
+                    <div className="flex mt-1">
                         <DatePicker
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 
+                            className="w-full px-4 border border-gray-300 rounded-lg text-gray-900 
                                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholderText="Start date" 
                             id="startDate"
@@ -51,7 +51,7 @@ export const TaskCard = ({task, addTask, removeGoalTask}) => {
                             }}/>
 
                         <DatePicker
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 
+                            className="w-full px-4 border border-gray-300 rounded-lg text-gray-900 
                                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholderText="End date" 
                             id="endDate"

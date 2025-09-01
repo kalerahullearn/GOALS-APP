@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { EllipsisVerticalIcon } from "lucide-react";
 import { Link , useNavigate} from "react-router-dom";
+import { ProgressBar } from "../compoenents/ProgressBar";
 
 export const GoalCard = ({ goal, deleteGoal }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,15 +52,7 @@ export const GoalCard = ({ goal, deleteGoal }) => {
       <Link to={`/goals/view/${goal.id}`} className="text-white">
       <h3 className="text-lg font-bold text-gray-900">{goal.title}</h3>
       <p className="text-sm text-gray-600 mt-1">{goal.detail}</p>
-
-      {/* Progress Bar */}
-      <div className="w-full bg-gray-200 h-2 mt-3 rounded-full">
-        <div
-          className="bg-blue-500 h-2 rounded-full"
-          style={{ width: `${goal.progress}%` }}
-        />
-      </div>
-      <p className="text-xs text-gray-500 mt-2">{goal.progress}% Complete</p>
+      <ProgressBar progress={goal.progress}/>
       </Link>
     </div>
     
